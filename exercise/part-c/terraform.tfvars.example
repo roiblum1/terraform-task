@@ -1,0 +1,21 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is gitignored — never commit real values.
+#
+# Do NOT put vsphere_password here. Supply it via:
+#   export TF_VAR_vsphere_password='...'
+
+vsphere_server     = "vcenter.lab.local"
+vsphere_user       = "student01@vsphere.local"
+vsphere_datacenter = "DC1"
+vsphere_cluster    = "Compute-Cluster-1"
+vm_template        = "rhel9-template"
+
+# Given by the instructor — see README.md "Instructor notes".
+network_id   = "dvportgroup-1001"
+datastore_id = "datastore-2001"
+
+vm_folder  = "workloads/students/student-01"
+student_id = "01"
+
+# How many VMs to create: student-01-tf-vm-01, -02, -03, ...
+vm_count = 3

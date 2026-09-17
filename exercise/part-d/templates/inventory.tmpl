@@ -1,0 +1,13 @@
+[student_vms]
+# TODO: loop over `vms` and print one line per VM:
+#   ${vm.name} ansible_host=${vm.ip_address}
+#
+# Use Terraform's template directive syntax:
+#   %{ for vm in vms ~}
+#   ...
+#   %{ endfor ~}
+# The trailing ~ strips the newline the directive line itself would
+# otherwise leave behind, so you don't get blank lines in the output.
+
+[student_vms:vars]
+ansible_user=${ansible_user}
