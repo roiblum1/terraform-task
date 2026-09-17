@@ -21,13 +21,15 @@ data "vsphere_virtual_machine" "template" {
 
 module "vm" {
   source = "./modules/vm"
-  # TODO: count = var.vm_count
-  # This turns module.vm into a LIST of module instances (module.vm[0],
+  count  = null # TODO: how many VMs? (see the variable you just added)
+  # count turns module.vm into a LIST of module instances (module.vm[0],
   # module.vm[1], ...) instead of a single one. Every argument below is now
   # evaluated once per instance, with count.index available (0-based).
 
-  # TODO: name = "student-${var.student_id}-tf-vm-${format("%02d", count.index + 1)}"
-  # format("%02d", n) pads n to 2 digits: 1 -> "01", 2 -> "02", 3 -> "03".
+  name = null # TODO: build "student-<id>-tf-vm-01" / "-02" / "-03" here.
+  # You'll need string interpolation plus Terraform's format() function to
+  # zero-pad count.index (0-based!) into a 2-digit suffix. See CHEATSHEET.md
+  # for what format("%02d", n) does.
   resource_pool_id = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
   datastore_id     = var.datastore_id
   folder           = var.vm_folder

@@ -18,10 +18,11 @@ Turn your single-VM module call into three, auto-named
 
 1. `cd exercise/part-c`
 2. Add `variable "vm_count"` to `variables.tf` (number, default `3`).
-3. In `main.tf`, add `count = var.vm_count` to the `module "vm"` block.
-4. Add the `name` line using `format("%02d", count.index + 1)` to zero-pad
-   the index (see the comment above it for exactly what it should look
-   like).
+3. In `main.tf`, set `count` on the `module "vm"` block to your new variable.
+4. Fill in the `name` expression using string interpolation and
+   `format("%02d", count.index + 1)` to zero-pad the index (`count.index`
+   is 0-based, so add 1 before padding). See `CHEATSHEET.md` if you're
+   unsure what `format()` does.
 5. Fix `outputs.tf` — with `count` in play, `module.vm` is now a **list**
    of module instances, not a single one, so `module.vm.name` no longer
    works. Use a `for` expression instead.

@@ -1,32 +1,29 @@
-# TODO: move the vsphere_virtual_machine resource from the old root main.tf
-# into here, and rewrite every hardcoded/var.* reference to use this
-# module's own input variables instead (see variables.tf — every input you
-# need is already declared there: var.name, var.resource_pool_id, etc.)
-#
-# A module's resource block never reads root-level variables directly — it
-# only ever sees what's declared in ITS OWN variables.tf.
+# TODO: fill in every argument below, using this module's OWN input
+# variables (see variables.tf) — not the root module's variables. A
+# module's resource block can only ever see what's declared in its own
+# variables.tf.
 
 resource "vsphere_virtual_machine" "vm" {
-  # TODO: name             = var.name
-  # TODO: resource_pool_id = var.resource_pool_id
-  # TODO: datastore_id     = var.datastore_id
-  # TODO: folder           = var.folder
+  name             = null # TODO
+  resource_pool_id = null # TODO
+  datastore_id     = null # TODO
+  folder           = null # TODO
 
-  # TODO: num_cpus = var.num_cpus
-  # TODO: memory   = var.memory
-  # TODO: guest_id = var.guest_id
+  num_cpus = null # TODO
+  memory   = null # TODO
+  guest_id = null # TODO
 
   network_interface {
-    # TODO: network_id = var.network_id
+    network_id = null # TODO
   }
 
   disk {
-    label = "disk0"
-    # TODO: size             = var.disk_size
-    # TODO: thin_provisioned = var.disk_thin_provisioned
+    label            = "disk0"
+    size             = null # TODO
+    thin_provisioned = null # TODO
   }
 
   clone {
-    # TODO: template_uuid = var.template_uuid
+    template_uuid = null # TODO
   }
 }

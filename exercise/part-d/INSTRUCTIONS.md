@@ -28,8 +28,9 @@ not empty.
 
 1. `cd exercise/part-d`
 2. Add `variable "ansible_user"` to `variables.tf`.
-3. Write the `local_file` resource in `inventory.tf` (a full example is
-   commented in the file — uncomment and adapt it, or write your own).
+3. Fill in the `local_file` resource in `inventory.tf` — `filename` and
+   `content` are both blanked out (see the comments in the file for what
+   each needs).
 4. Fill in the `%{ for }` loop in `templates/inventory.tmpl`.
 5. Add the two outputs in `outputs.tf`.
 6. `terraform init` — new provider (`hashicorp/local`), so init is required
@@ -43,8 +44,9 @@ not empty.
 
 ## Hints
 
-- `module.vm` is a list (because of `count` from Part C); collect it with
-  `[for m in module.vm : { name = m.name, ip_address = m.ip_address }]`.
+- `module.vm` is a list (because of `count` from Part C) — you'll need a
+  `for` expression to turn it into the `name`/`ip_address` pairs the
+  template wants. See `CHEATSHEET.md` for the syntax.
 - `templatefile(path, vars_map)` renders a file as a template — the keys of
   `vars_map` become variables available inside the template.
 - If `ip_address` comes back empty in `inventory.ini`, check that the VM

@@ -4,22 +4,17 @@
 #
 # The module already waits for VMware Tools to report an IP
 # (wait_for_guest_net_timeout in modules/vm/main.tf — go look) and outputs
-# it as ip_address. Your job is to collect that across all VM instances and
-# render templates/inventory.tmpl with it.
+# it as ip_address. Your job: collect that across all VM instances and
+# render templates/inventory.tmpl with it, writing the result to
+# inventory.ini using the hashicorp/local provider's local_file resource.
 # ==============================================================================
 
-# TODO: write a local_file resource named "ansible_inventory":
-#
-# resource "local_file" "ansible_inventory" {
-#   filename = "${path.module}/inventory.ini"
-#
-#   content = templatefile("${path.module}/templates/inventory.tmpl", {
-#     vms = [
-#       for m in module.vm : {
-#         name       = m.name
-#         ip_address = m.ip_address
-#       }
-#     ]
-#     ansible_user = var.ansible_user
-#   })
-# }
+resource "local_file" "ansible_inventory" {
+  filename = null # TODO: write it next to this file, named inventory.ini
+  # (hint: path.module gives you this module's own directory)
+
+  content = null # TODO: render templates/inventory.tmpl with templatefile().
+  # It needs two things: a `vms` list where each entry has a `name` and an
+  # `ip_address` (build this from module.vm with a `for` expression — see
+  # CHEATSHEET.md for the syntax), and `ansible_user`.
+}

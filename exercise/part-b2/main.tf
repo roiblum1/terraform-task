@@ -20,22 +20,25 @@ data "vsphere_virtual_machine" "template" {
 }
 
 # TODO: replace the resource that used to be here with a call to the vm
-# module you just wrote under ./modules/vm. Wire every argument it needs:
-#
-# module "vm" {
-#   source = "./modules/vm"
-#
-#   name             = "student-${var.student_id}-tf-vm-01"
-#   resource_pool_id = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
-#   datastore_id     = var.datastore_id
-#   folder           = var.vm_folder
-#   network_id       = var.network_id
-#
-#   guest_id              = data.vsphere_virtual_machine.template.guest_id
-#   template_uuid         = data.vsphere_virtual_machine.template.id
-#   disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
-#
-#   num_cpus  = var.vm_num_cpus
-#   memory    = var.vm_memory
-#   disk_size = var.vm_disk_size
-# }
+# module you just wrote under ./modules/vm. Every input it needs is
+# declared in modules/vm/variables.tf — read that file, then fill in each
+# blank below. Most come straight from a var.* or data.* already in this
+# file; `name` you build yourself, and it must come out to
+# "student-<your-id>-tf-vm-01".
+module "vm" {
+  source = "./modules/vm"
+
+  name             = null # TODO
+  resource_pool_id = null # TODO: the compute cluster's resource pool
+  datastore_id     = null # TODO
+  folder           = null # TODO
+  network_id       = null # TODO
+
+  guest_id              = null # TODO: from data.vsphere_virtual_machine.template
+  template_uuid         = null # TODO: from data.vsphere_virtual_machine.template
+  disk_thin_provisioned = null # TODO: from data.vsphere_virtual_machine.template
+
+  num_cpus  = null # TODO
+  memory    = null # TODO
+  disk_size = null # TODO
+}

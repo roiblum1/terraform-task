@@ -1,1 +1,1 @@
-# TODO: output "vm_name" -> module.vm.name
+# TODO: output "vm_name" — expose the VM's name from the module call above.

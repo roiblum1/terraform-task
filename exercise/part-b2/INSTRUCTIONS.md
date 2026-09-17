@@ -11,21 +11,24 @@ should contain no `resource "vsphere_virtual_machine"` block at all — only a
 
 - `variables.tf`, `versions.tf`, `terraform.tfvars.example` — complete,
   unchanged from Part B.
-- `main.tf` — provider + data sources are complete; the module call is
-  commented out as a `# TODO` block for you to uncomment and adapt.
+- `main.tf` — provider + data sources are complete; the `module "vm"` block
+  is there with every argument blanked out to `null # TODO`.
 - `outputs.tf` — one `# TODO`.
 - `modules/vm/variables.tf`, `modules/vm/versions.tf` — complete. Look here
   first: every input the module needs is already declared.
-- `modules/vm/main.tf` — the resource body, with `# TODO` on every argument.
-- `modules/vm/outputs.tf` — three `# TODO` outputs.
+- `modules/vm/main.tf` — the resource body, with every argument blanked out.
+- `modules/vm/outputs.tf` — one `# TODO` covering all three outputs.
 
 ## Steps
 
 1. `cd exercise/part-b2`
-2. In `modules/vm/main.tf`: uncomment each line, replacing the hardcoded
-   values from Part A with the matching `var.*` from `modules/vm/variables.tf`.
-3. In `modules/vm/outputs.tf`: add the three outputs.
-4. In root `main.tf`: uncomment the `module "vm"` block.
+2. In `modules/vm/main.tf`: replace each `null # TODO` with the matching
+   `var.*` from `modules/vm/variables.tf` (the variable names line up
+   1:1 with the resource arguments).
+3. In `modules/vm/outputs.tf`: write the three outputs described there.
+4. In root `main.tf`: replace each `null # TODO` in the `module "vm"` block
+   with the right `var.*` / `data.*` expression — most already exist
+   elsewhere in this file; `name` you build yourself.
 5. In root `outputs.tf`: add `vm_name`.
 6. `source ../../scripts/offline-env.sh` if needed, then `terraform init` —
    **required again**, even though you ran it in Part B, because Terraform
