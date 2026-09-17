@@ -20,14 +20,12 @@ never end up in a file that gets committed.
 ## Steps
 
 1. `cd exercise/part-b`
-2. `source ../../scripts/offline-env.sh` (from the repo root, or adjust the
-   path) if you haven't already this shell session.
-3. Write each `variable` block in `variables.tf`.
-4. `cp terraform.tfvars.example terraform.tfvars` and fill in your values.
-5. `export TF_VAR_vsphere_password='...'` — **not** in terraform.tfvars.
-6. `terraform init && terraform plan`
-7. `terraform apply`
-8. `terraform destroy` when done.
+2. Write each `variable` block in `variables.tf`.
+3. `cp terraform.tfvars.example terraform.tfvars` and fill in your values.
+4. `export TF_VAR_vsphere_password='...'` — **not** in terraform.tfvars.
+5. `terraform init && terraform plan`
+6. `terraform apply`
+7. `terraform destroy` when done.
 
 ## Why the password needs special treatment
 

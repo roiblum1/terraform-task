@@ -30,9 +30,8 @@ should contain no `resource "vsphere_virtual_machine"` block at all — only a
    with the right `var.*` / `data.*` expression — most already exist
    elsewhere in this file; `name` you build yourself.
 5. In root `outputs.tf`: add `vm_name`.
-6. `source ../../scripts/offline-env.sh` if needed, then `terraform init` —
-   **required again**, even though you ran it in Part B, because Terraform
-   needs to discover the new module.
+6. `terraform init` — **required again**, even though you ran it in Part B,
+   because Terraform needs to discover the new module.
 7. `terraform plan` — should show the same single VM as Part B, just created
    through the module now.
 8. `terraform apply`, then `terraform destroy` when done.

@@ -24,12 +24,13 @@ Full working answers are in the matching `solutions/<part>/` directory.
 sigit-targil/
 ├── providers/          # offline provider mirror (committed — see below)
 ├── scripts/
-│   ├── offline-env.sh  # source this before any `terraform init`
-│   └── validate.sh     # fmt + init + validate everything in solutions/
+│   └── validate.sh     # fmt + offline init + validate everything in solutions/
 ├── exercise/
 │   ├── part-a/ … part-d/
+│   │   └── terraform.d/plugins -> ../../../providers
 ├── solutions/
 │   ├── part-a/ … part-d/
+│   │   └── terraform.d/plugins -> ../../../providers
 └── CHEATSHEET.md
 ```
 
@@ -55,28 +56,33 @@ Everything else (datacenter, compute cluster, template) is looked up by
 name via `data.vsphere_*`, which is the normal/expected pattern and worth
 seeing at least once.
 
-## Offline provider setup
+## Offline providers — nothing to set up
 
 There is no registry access in this network, so the `vmware/vsphere` and
 `hashicorp/local` provider binaries are committed directly under
 `providers/` as a Terraform filesystem mirror (`linux_amd64` and
 `darwin_arm64`, built with `terraform providers mirror`).
 
-Before running `terraform init` **anywhere** in this repo:
+**You don't have to do anything to use them.** Every part directory
+contains a `terraform.d/plugins` symlink pointing back at that one shared
+`providers/` directory:
 
-```bash
-cd sigit-targil
-source scripts/offline-env.sh
+```
+exercise/part-a/terraform.d/plugins -> ../../../providers
 ```
 
-This writes a temporary `.providers.tfrc` (gitignored — it has an absolute
-path, so it can't be committed) and exports `TF_CLI_CONFIG_FILE` to point
-at it. From there, `terraform init` in any `exercise/part-*` or
-`solutions/part-*` directory installs providers from the local mirror with
-zero network calls. Run this once per shell session.
+`terraform.d/plugins` is a location Terraform searches automatically (an
+"implied local mirror") — no CLI config, no environment variable, no setup
+script. So in any part directory, plain `terraform init` just works, with
+zero network calls. Because it's a symlink, the ~45 MB of provider binaries
+is stored **once** in the repo, not once per part.
+
+Each part also ships a committed `.terraform.lock.hcl` pinning the exact
+provider versions and checksums for both `linux_amd64` and `darwin_arm64`,
+so init is reproducible and never needs to compute or fetch anything.
 
 If you ever need to rebuild or extend the mirror (e.g. add a platform or
-provider):
+provider), on a machine **with** internet:
 
 ```bash
 terraform providers mirror -platform=linux_amd64 -platform=darwin_arm64 providers
@@ -85,7 +91,6 @@ terraform providers mirror -platform=linux_amd64 -platform=darwin_arm64 provider
 ## Running a part
 
 ```bash
-source scripts/offline-env.sh        # once per shell
 cd exercise/part-a                   # or solutions/part-a to see the answer
 # fill in the TODOs per that part's INSTRUCTIONS.md
 terraform init
@@ -126,6 +131,26 @@ From the vCenter MOB, or with PowerCLI:
 Give each student their `dvportgroup-NNNN` / `datastore-NNNN` pair along
 with their vCenter credentials, datacenter, cluster, and template names —
 that's everything `terraform.tfvars.example` in each part asks for.
+
+### Distributing this repo (symlinks matter)
+
+The `terraform.d/plugins` entries are **symlinks**, which is what keeps the
+provider binaries stored once instead of ten times. Distribute in a way
+that preserves them:
+
+- `git clone` / `git archive` — fine, git stores symlinks natively.
+- `tar czf` — fine, preserves symlinks by default.
+- **`zip` — not fine by default.** Plain `zip` follows symlinks and copies
+  the mirror ten times (~450 MB), or worse, breaks them. Use `zip -y` to
+  store symlinks as symlinks.
+- Copying with `cp -r` follows symlinks; use `cp -a` instead.
+
+To check after distributing, have a student run `./scripts/validate.sh`,
+which verifies every symlink resolves. If symlinks are unavailable in your
+environment entirely (e.g. a Windows share), the fallback is to drop the
+symlinks and have students run
+`terraform init -plugin-dir=../../providers` instead — same mirror, one
+extra flag.
 
 ### Cleanup between cohorts / runs
 

@@ -26,14 +26,13 @@ Part B is where we clean it up.
 ## Steps
 
 1. `cd exercise/part-a`
-2. From the repo root, run `source scripts/offline-env.sh` — this points
-   Terraform at the offline provider mirror. Do this once per shell.
-3. Fill in every `# TODO` in `main.tf`.
-4. `terraform init`
-5. `terraform plan` — read it. Does it show exactly one VM being created?
-6. `terraform apply`
-7. Confirm the VM exists in vCenter, named `student-<id>-tf-vm-01`.
-8. When you're done, `terraform destroy` to clean up before moving on.
+2. Fill in every `# TODO` in `main.tf`.
+3. `terraform init` — works offline, no setup needed; the providers come
+   from this repo.
+4. `terraform plan` — read it. Does it show exactly one VM being created?
+5. `terraform apply`
+6. Confirm the VM exists in vCenter, named `student-<id>-tf-vm-01`.
+7. When you're done, `terraform destroy` to clean up before moving on.
 
 ## Hints
 
@@ -43,8 +42,9 @@ Part B is where we clean it up.
   thin-provisioned — your VM's disk must match).
 - `local.network_id` / `local.datastore_id` are already declared for you in
   the `locals` block — just fill in the values and reference them.
-- If `terraform init` tries to reach the internet, you forgot step 2, or
-  ran it from the wrong directory (must be the repo root).
+- If `terraform init` tries to reach the internet and fails, check that
+  `terraform.d/plugins` still exists in this directory and points at the
+  repo's `providers/` folder — that symlink is what makes init work offline.
 
 ## Acceptance criteria
 
